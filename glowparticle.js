@@ -37,9 +37,26 @@ export class GlowParticle {
         }
 
         ctx.beginPath();
-
-        ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, 1)`
-        ctx.arc(this.x, this.y, this.radius, 0, PI2, false);
+        const g = ctx.createRadialGradient(
+            /*
+            createRadialGradient( x1, y1, 첫번째 원의 반지름 r1, x2, y2, 두번째 원의 반지름 r2 )
+            => 원형 그라데이션 지정 
+            */
+            this.x,
+            this.y,
+            this.radius * 0.01,
+            this.x,
+            this.y,
+            this.radius
+        );
+        g.addColorStop(0,`rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, 1)`);
+        /*
+        addColorStop(오프셋, 색상)  => 그라데이션 경계색 지정 / 오프셋 
+        :  0.0에서 1.0까지의 색상의 상대적인 위치
+        */
+        g.addColorStop(1,`rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, 0)`);
+        ctx.fillStyle =g;//`rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, 1)`;
+        ctx.arc(this.x, this.y, this.radius, 0, PI2);
         ctx.fill();
     }
 }
